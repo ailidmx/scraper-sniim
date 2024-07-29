@@ -1,0 +1,26 @@
+steps:
+    # Step 1: Pull the base image
+    - name: 'gcr.io/cloud-builders/docker'
+      args: ['pull', 'python:3.5']
+  
+    # Step 2: Create the directory
+    - name: 'gcr.io/cloud-builders/docker'
+      args: ['run', 'python:3.5', 'mkdir', '/precios']
+  
+    # Step 3: Copy the files into the container
+    - name: 'gcr.io/cloud-builders/docker'
+      args: ['cp', '.', 'python:3.5:/precios']
+  
+    # Step 4: Set the working directory
+    - name: 'gcr.io/cloud-builders/docker'
+      args: ['run', 'python:3.5', 'sh', '-c', 'cd /precios']
+  
+    # Step 5: Install the requirements and set permissions
+    - name: 'gcr.io/cloud-builders/docker'
+      args: ['run', 'python:3.5', 'sh', '-c', 'pip install -r /precios/requirements.txt && ls /precios && chmod 777 /precios/start.sh']
+  
+    # Step 6: Set the entrypoint (Optional, depends on how you run the container)
+    - name: 'gcr.io/cloud-builders/docker'
+      args: ['run', '-d', 'python:3.5', 'sh', '-c', './precios/start.sh']
+options:
+    logging: CLOUD_LOGGING_ONLY
