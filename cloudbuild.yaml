@@ -9,7 +9,7 @@ steps:
   
     # Step 3: Copy the files into the container
     - name: 'gcr.io/cloud-builders/docker'
-      args: ['cp', '.', 'python:3.5:/precios']
+      args: ['run', 'python:3.5', 'cp', '.', '/precios']
   
     # Step 4: Set the working directory
     - name: 'gcr.io/cloud-builders/docker'
