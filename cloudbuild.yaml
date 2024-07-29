@@ -1,34 +1,27 @@
 steps:
-    # Step 1: Pull the base image
-    - name: 'gcr.io/cloud-builders/docker'
-      args: ['pull', 'python:3.5']
-    - name: 'gcr.io/cloud-builders/docker'
-      args: ['build', '-t', 'gcr.io/cloud-builders/docker', '.']
-options:
-    logging: CLOUD_LOGGING_ONLY
-
-steps:
   # Step 1: Pull the base image (optional if not needed)
   - name: 'gcr.io/cloud-builders/docker'
     args: ['pull', 'python:3.5']
 
-  # Step 2: Build your Docker image (assuming this is your application image)
+  # Step 2: Build your Docker image
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/sniim-scraper-430915/sniim-scraper-image', '.']
 
-  # Step 3: Push the Docker image to Container Registry (if not already pushed)
+  # Step 3: Push the Docker image to Container Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/sniim-scraper-430915/sniim-scraper-image']
 
-  # Step 4: Configure kubectl to use credentials from the service account
-  - name: 'gcr.io/cloud-builders/gke-deploy'
+  # Step 4: Configure kubectl to apply the deployment to your GKE cluster
+  - name: 'gcr.io/cloud-builders/kubectl'
     args:
-      - '--verbosity=info'
-      - '--filename=kubernetes/deployment.yaml'  # Path to your Kubernetes deployment manifest
-      - '--kubeconfig=/workspace/.kube/config'   # Optional: Use if your config is not default
-      - '--image=gcr.io/sniim-scraper-430915/sniim-scraper-image:latest'
-      - '--cluster=[autopilot-cluster-1]'
-      - '--namespace=default'  # Replace with your desired namespace
+      - 'set'
+      - 'image'
+      - 'deployment/[DEPLOYMENT_NAME]'  # Replace with your Kubernetes deployment name
+      - '[CONTAINER_NAME]=gcr.io/sniim-scraper-430915/sniim-scraper-image:latest'  # Replace with your Docker image reference
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=[COMPUTE_ZONE]'  # Replace with your GKE cluster's zone
+      - 'CLOUDSDK_CONTAINER_CLUSTER=[CLUSTER_NAME]'  # Replace with your GKE cluster's name
+      - 'CLOUDSDK_CONTAINER_USE_V1_API_CLIENT=false'  # Optional: Use if you encounter API version issues
 
 options:
   logging: CLOUD_LOGGING_ONLY
