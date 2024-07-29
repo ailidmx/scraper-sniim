@@ -12,7 +12,7 @@ steps:
     args:
       - 'set'
       - 'image'
-      - 'sniim-scraper-deploy'  # Replace with your deployment name
+      - 'deployment/sniim-scraper-deploy'  # Replace with your deployment name
       - 'sniim-scraper-container=gcr.io/sniim-scraper-430915/sniim-scraper-image:latest'  # Replace with your Docker image reference
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=us-west1'  # Replace with your GKE cluster's zone
