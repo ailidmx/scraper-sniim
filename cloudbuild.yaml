@@ -1,26 +1,22 @@
 steps:
-  # Step 1: Pull the base image (optional if not needed)
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['pull', 'python:3.5']
-
-  # Step 2: Build your Docker image
+  # Step 1: Build your Docker image
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/sniim-scraper-430915/sniim-scraper-image', '.']
 
-  # Step 3: Push the Docker image to Container Registry
+  # Step 2: Push the Docker image to Container Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/sniim-scraper-430915/sniim-scraper-image']
 
-  # Step 4: Configure kubectl to apply the deployment to your GKE cluster
+  # Step 3: Update Kubernetes deployment with the new image
   - name: 'gcr.io/cloud-builders/kubectl'
     args:
       - 'set'
       - 'image'
-      - 'deployment/[DEPLOYMENT_NAME]'  # Replace with your Kubernetes deployment name
-      - '[CONTAINER_NAME]=gcr.io/sniim-scraper-430915/sniim-scraper-image:latest'  # Replace with your Docker image reference
+      - 'deployment/sniim-scraper-deploy'  # Replace with your deployment name
+      - 'sniim-scraper-container=gcr.io/sniim-scraper-430915/sniim-scraper-image:latest'  # Replace with your Docker image reference
     env:
-      - 'CLOUDSDK_COMPUTE_ZONE=[COMPUTE_ZONE]'  # Replace with your GKE cluster's zone
-      - 'CLOUDSDK_CONTAINER_CLUSTER=[CLUSTER_NAME]'  # Replace with your GKE cluster's name
+      - 'CLOUDSDK_COMPUTE_ZONE=us-west1'  # Replace with your GKE cluster's zone
+      - 'CLOUDSDK_CONTAINER_CLUSTER=autopilot-cluster-1'  # Replace with your GKE cluster's name
       - 'CLOUDSDK_CONTAINER_USE_V1_API_CLIENT=false'  # Optional: Use if you encounter API version issues
 
 options:
