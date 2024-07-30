@@ -29,11 +29,3 @@ class Mongoclient:
             return True if getattr(inserted, 'inserted_id') else False
         else:
             raise ValueError("Database collection not specified")
-
-# Example usage:
-os.environ['MONGO_USER'] = 'bert'
-os.environ['MONGO_PASSWORD'] = 'your_password'
-os.environ['MONGO_HOST'] = 'bert.0ixvcge.mongodb.net'
-os.environ['MONGO_DATABASE'] = 'your_database_name'
-client = Mongoclient(db_collection='your_collection_name')
-client.insert_one({'key':
