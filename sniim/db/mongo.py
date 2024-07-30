@@ -21,13 +21,20 @@ class Mongoclient:
             self.collection = self.db[self.db_collection]
 
     @property
-    def _connection_string(self):
-        if self.connect_with_user:
-            # Using username/password authentication
-            return f"mongodb://{quote_plus(self.user)}:{quote_plus(self.password)}@{self.host}:{self.port}/?retryWrites=true&w=majority"
-        else:
-            # Without username/password
-            return f"mongodb://{self.host}:{self.port}/?retryWrites=true&w=majority"
+def _connection_string(self):
+    if self.connect_with_user:
+        return "mongodb://{0}:{1}@{2}:{3}/?retryWrites=true&w=majority".format(
+            quote_plus(self.user),
+            quote_plus(self.password),
+            self.host,
+            self.port
+        )
+    else:
+        return "mongodb://{0}:{1}/?retryWrites=true&w=majority".format(
+            self.host,
+            self.port
+        )
+
 
     def insert_one(self, document):
         if self.db_collection:

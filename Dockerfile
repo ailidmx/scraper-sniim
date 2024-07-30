@@ -6,4 +6,4 @@ COPY . precios/
 WORKDIR /precios
 RUN pip install -r requirements.txt && ls && chmod 777 start.sh
 
-ENTRYPOINT ["./start.sh"]
+#ENTRYPOINT ["./start.sh"]
