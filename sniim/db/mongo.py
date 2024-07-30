@@ -10,12 +10,8 @@ class Mongoclient:
         self.db_name = os.environ.get('MONGO_DATABASE', 'central')
         self.db_collection = db_collection
 
-        # Create the MongoClient instance with correct SSL/TLS options
-        self.client = MongoClient(
-            self._connection_string,
-            ssl=True,
-            ssl_cert_reqs='CERT_REQUIRED'  # Ensure certificate validation
-        )
+        # Create the MongoClient instance with SSL/TLS enabled
+        self.client = MongoClient(self._connection_string, tls=True)  # Using tls instead of ssl
         self.db = self.client[self.db_name]
         if self.db_collection:
             self.collection = self.db[self.db_collection]
