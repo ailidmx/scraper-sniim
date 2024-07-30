@@ -4,6 +4,6 @@ RUN mkdir precios
 COPY . precios/
 
 WORKDIR /precios
-RUN pip install -r requirements.txt && ls && chmod 777 start.sh
+RUN pip install -r requirements.txt && ls && chmod 777 start.sh && python setup.py install
 
-ENTRYPOINT ["python setup.py install;python sniim/cli.py  --historial"] 
+ENTRYPOINT ["./start.sh"]
