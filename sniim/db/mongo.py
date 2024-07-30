@@ -1,4 +1,3 @@
-import os
 from urllib.parse import quote_plus
 from pymongo import MongoClient
 
@@ -17,7 +16,7 @@ class Mongoclient:
 
     @property
     def _connection_string(self):
-        return "mongodb+srv://{0}:{1}@{2}/?retryWrites=true&w=majority".format(
+        return "mongodb+srv://{0}:{1}@{2}/?retryWrites=true&w=majority&tls=true&tlsAllowInvalidCertificates=true".format(
             quote_plus(self.user),
             quote_plus(self.password),
             self.host
