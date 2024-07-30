@@ -4,19 +4,13 @@ from pymongo import MongoClient
 
 class Mongoclient:
     def __init__(self, db_collection=None):
-        self.connect_with_user = os.environ.get('CONNECT_WITH_USER', 'False') == 'True'
-
-        if self.connect_with_user:
-            self.user = os.environ.get('MONGO_USER', 'central')
-            self.password = os.environ.get('MONGO_PASSWORD', 'central')
-            self.host = os.environ.get('MONGO_HOST', 'bert.0ixvcge.mongodb.net')
-            self.db_name = os.environ.get('MONGO_DATABASE', 'central')
-        else:
-            raise ValueError("User authentication is required for connecting with MongoDB Atlas.")
-
-        self.client = MongoClient(self._connection_string)
+        self.user = os.environ.get('MONGO_USER', 'central')
+        self.password = os.environ.get('MONGO_PASSWORD', 'central')
+        self.host = os.environ.get('MONGO_HOST', 'bert.0ixvcge.mongodb.net')
+        self.db_name = os.environ.get('MONGO_DATABASE', 'central')
         self.db_collection = db_collection
 
+        self.client = MongoClient(self._connection_string)
         self.db = self.client[self.db_name]
         if self.db_collection:
             self.collection = self.db[self.db_collection]
@@ -37,10 +31,9 @@ class Mongoclient:
             raise ValueError("Database collection not specified")
 
 # Example usage:
-# os.environ['CONNECT_WITH_USER'] = 'True'
-# os.environ['MONGO_USER'] = 'bert'
-# os.environ['MONGO_PASSWORD'] = 'your_password'
-# os.environ['MONGO_HOST'] = 'bert.0ixvcge.mongodb.net'
-# os.environ['MONGO_DATABASE'] = 'your_database_name'
-# client = Mongoclient(db_collection='your_collection_name')
-# client.insert_one({'key': 'value'})
+os.environ['MONGO_USER'] = 'bert'
+os.environ['MONGO_PASSWORD'] = 'your_password'
+os.environ['MONGO_HOST'] = 'bert.0ixvcge.mongodb.net'
+os.environ['MONGO_DATABASE'] = 'your_database_name'
+client = Mongoclient(db_collection='your_collection_name')
+client.insert_one({'key':
