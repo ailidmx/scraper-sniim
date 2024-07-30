@@ -21,7 +21,7 @@ class Mongoclient:
             self.collection = self.db[self.db_collection]
 
     @property
-def _connection_string(self):
+    def _connection_string(self):
     if self.connect_with_user:
         return "mongodb://{0}:{1}@{2}:{3}/?retryWrites=true&w=majority".format(
             quote_plus(self.user),
