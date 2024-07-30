@@ -9,10 +9,12 @@ class Mongoclient:
         self.host = os.environ.get('MONGO_HOST', 'bert.0ixvcge.mongodb.net')
         self.db_name = os.environ.get('MONGO_DATABASE', 'central')
         self.db_collection = db_collection
+
+        # Create the MongoClient instance with correct SSL/TLS options
         self.client = MongoClient(
             self._connection_string,
-            tls=True,
-            tlsAllowInvalidCertificates=True
+            ssl=True,
+            ssl_cert_reqs='CERT_REQUIRED'  # Ensure certificate validation
         )
         self.db = self.client[self.db_name]
         if self.db_collection:
@@ -20,7 +22,7 @@ class Mongoclient:
 
     @property
     def _connection_string(self):
-        return "mongodb+srv://{0}:{1}@{2}/?retryWrites=true&w=majority&tls=true&tlsAllowInvalidCertificates=true".format(
+        return "mongodb+srv://{0}:{1}@{2}/?retryWrites=true&w=majority".format(
             quote_plus(self.user),
             quote_plus(self.password),
             self.host
