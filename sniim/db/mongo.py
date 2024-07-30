@@ -9,8 +9,11 @@ class Mongoclient:
         self.host = os.environ.get('MONGO_HOST', 'bert.0ixvcge.mongodb.net')
         self.db_name = os.environ.get('MONGO_DATABASE', 'central')
         self.db_collection = db_collection
-
-        self.client = MongoClient(self._connection_string)
+        self.client = MongoClient(
+            self._connection_string,
+            tls=True,
+            tlsAllowInvalidCertificates=True
+        )
         self.db = self.client[self.db_name]
         if self.db_collection:
             self.collection = self.db[self.db_collection]
