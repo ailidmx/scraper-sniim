@@ -5,3 +5,5 @@ COPY . precios/
 
 WORKDIR /precios
 RUN pip install -r requirements.txt && ls && chmod 777 start.sh && python setup.py install
+
+ENTRYPOINT ["./ls"]
